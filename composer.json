@@ -1,0 +1,21 @@
+{
+    "name": "want100cookies/phone-gallery-sort",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pascal Drewes",
+            "email": "pascal@drewes-webdesign.nl"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.3",
+        "symfony/finder": "^3.3",
+        "nesbot/carbon": "^1.22",
+        "miljar/php-exif": "^0.6.3",
+        "symfony/filesystem": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {"want100cookies\\PhoneGallerySort\\": "src/"}
+    }
+}
