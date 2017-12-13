@@ -65,7 +65,7 @@ class SortCommand extends Command
         $finder->files()->in($input->getOption('source'));
 
         $io->comment("Getting dates...");
-        list($dates, $unsorted) = $this->getDates($finder);
+        list($dates, $unsorted) = $this->getDates($finder, $io);
 
         $io->comment("Sorting based on dates...");
         $sorted = $this->sort($dates, $input->getOption("event-threshold"));
@@ -106,25 +106,26 @@ class SortCommand extends Command
             if (count($date) > $eventThreshold) {
                 $sorted[$carbon->format("Y-m-d")] = $date;
             } else {
-                $format = "Y-m";
-                if (!array_key_exists($carbon->format($format), $sorted)) {
-                    $sorted[$carbon->format($format)] = [];
+                $key = $carbon->format("Y-m");
+                if (!array_key_exists($key, $sorted)) {
+                    $sorted[$key] = [];
                 }
 
-                array_merge($sorted[$carbon->format($format)], $date);
+                array_push($sorted[$key], ...$date);
             }
         }
 
         return $sorted;
     }
 
-    protected function getDates(Finder $finder)
+    protected function getDates(Finder $finder, SymfonyStyle $io)
     {
         $dates = [];
         $unsorted = [];
 
         foreach ($finder as $file) {
             $date = $this->getDateTimeForFile($file);
+            $io->note("Got " . $date->toDateTimeString() . " from " . $file->getFilename());
             if ($date !== null) {
                 $index = $date->getTimestamp();
 
