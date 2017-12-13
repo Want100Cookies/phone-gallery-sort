@@ -62,7 +62,7 @@ class SortCommand extends Command
         }
 
         $finder = new Finder();
-        $finder->files()->in($input->getOption('source'));
+        $finder->files()->size("> 10K")->in($input->getOption('source'));
 
         $io->comment("Getting dates...");
         list($dates, $unsorted) = $this->getDates($finder, $io);
@@ -125,8 +125,8 @@ class SortCommand extends Command
 
         foreach ($finder as $file) {
             $date = $this->getDateTimeForFile($file);
-            $io->note("Got " . $date->toDateTimeString() . " from " . $file->getFilename());
             if ($date !== null) {
+                $io->note("Got " . $date->toDateTimeString() . " from " . $file->getFilename());
                 $index = $date->getTimestamp();
 
                 if (!array_key_exists($index, $dates)) {
